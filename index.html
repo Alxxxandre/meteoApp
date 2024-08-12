@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application météo</title>
+    <!-- Lien vers le fichier CSS pour le style de la page -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Conteneur principal de l'application météo -->
+    <div class="container">
+        <!-- Section de recherche de ville -->
+        <div class="searchVille">
+            <!-- Champ de saisie pour entrer le nom de la ville -->
+            <input type="text" placeholder="Recherchez une ville">
+            <!-- Bouton de recherche avec une icône de loupe -->
+            <button><img src="assets/bx-search-alt-2.svg"></button>
+        </div>
+        <!-- Message d'erreur affiché si la ville n'est pas trouvée -->
+        <div class="error">
+            <p>Le nom de la ville est incorrecte</p>
+        </div>
+        <!-- Section pour afficher les informations météo -->
+        <div class="meteo">
+            <!-- Icône représentant les conditions météorologiques actuelles -->
+            <img src="assets/nuage.png" class="meteo-icon">
+            <!-- Température actuelle de la ville -->
+            <h1 class="temp">22°C</h1>
+            <!-- Nom de la ville sélectionnée -->
+            <h2 class="ville">Marseille</h2>
+        </div>
+    </div>
+    
+<script>
+    // URL de base de l'API OpenWeatherMap, avec des paramètres par défaut pour la langue (français) et l'unité de température (Celsius)
+    const apiUrl = "https://api.openweathermap.org/data/2.5/weather?&lang=fr&appid=8285731bbac2a3c15e3b155e826d9173&units=metric&q=";
+
+    // Sélection des éléments HTML nécessaires pour l'interaction avec l'utilisateur
+    const searchBox = document.querySelector(".searchVille input");
+    const searchBtn = document.querySelector(".searchVille button");
+    const meteoIcon = document.querySelector(".meteo-icon");
+
+    // Fonction asynchrone pour vérifier la météo d'une ville donnée
+    async function checkMeteo(city){
+        // Effectue une requête à l'API avec le nom de la ville fourni
+        const response = await fetch(apiUrl + city);
+
+        // Si la ville n'est pas trouvée, affiche un message d'erreur et cache les informations météo
+        if(response.status == 404){
+            document.querySelector(".error").style.display = "block";
+            document.querySelector(".meteo").style.display = "none";
+        } else {
+            // Si la ville est trouvée, convertit les données en JSON
+            var data = await response.json();
+
+            // Met à jour l'interface avec le nom de la ville et la température actuelle
+            document.querySelector(".ville").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°c";
+
+            // Change l'icône météo en fonction des conditions actuelles
+            if(data.weather[0].main == "Clouds"){
+                meteoIcon.src = "assets/nuage.png";
+            }
+            else if(data.weather[0].main == "Clear"){
+                meteoIcon.src = "assets/soleil.png";
+            }
+            else if(data.weather[0].main == "Rain"){
+                meteoIcon.src = "assets/pluie.png";
+            }
+            else if(data.weather[0].main == "Drizzle"){
+                meteoIcon.src = "assets/couvert.png";
+            }
+            else if(data.weather[0].main == "Mist"){
+                meteoIcon.src = "assets/couvert.png";
+            }
+            
+            // Affiche les informations météo et cache le message d'erreur
+            document.querySelector(".meteo").style.display = "block";
+            document.querySelector(".error").style.display = "none";
+        }
+    }
+
+    // Ajoute un écouteur d'événements pour le clic sur le bouton de recherche
+    searchBtn.addEventListener("click", ()=>{
+        // Appelle la fonction checkMeteo avec la valeur entrée dans le champ de saisie
+        checkMeteo(searchBox.value);
+    });
+</script>
+</body>
+</html>

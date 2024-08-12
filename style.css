@@ -1,0 +1,70 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family:'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: #222;
+}
+
+.container{
+    width: 90%;
+    max-width: 480px;
+    background: linear-gradient(135deg, #88c4fc, #4f6cf9);
+    color: #fff;
+    margin: 100px auto 0;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+}
+
+.searchVille{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.searchVille input{
+    border: 0;
+    outline: 0;
+    background: #fff;
+    color: #555;
+    padding: 10px 25px;
+    height: 60px;
+    border-radius: 30px;
+    flex: 1;
+    margin-right: 16px;
+    font-size: 18px;
+}
+
+.searchVille button {
+    border: 0;
+    outline: 0;
+    background: #fff;
+    border-radius: 50%;
+    width: 60px;
+    height :60px;
+    cursor: pointer;
+}
+
+.meteo-icon{
+    width:150px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.meteo {
+    display:none;
+}
+
+.error {
+    text-align: left;
+    margin-left: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    color: red;
+    display:none;
+}
